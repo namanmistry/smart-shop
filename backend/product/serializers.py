@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import details,review
+from .models import details,review,catagory
 
 class product_serializer(serializers.ModelSerializer):
     class Meta:
@@ -11,3 +11,7 @@ class review_serialzer(serializers.ModelSerializer):
         model=review
         fields='__all__'
 
+class catagory_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=catagory
+        fields='__all__'

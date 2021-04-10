@@ -7,7 +7,7 @@ from .models import details,catagory, review
 from retailer.models import details as retailer_details
 from user.models import details as user_details,orders
 import random
-from .serializers import product_serializer,review_serialzer
+from .serializers import product_serializer,review_serialzer,catagory_serializer
 import os
 from django.db.models import Q
 from django.http import JsonResponse
@@ -150,4 +150,37 @@ class GetOrderInvoice(APIView):
 
     def post(self,request):
         return Response(status=405)
-#generate invoice of bill
+
+class DefaultHomeProducts(APIView):
+
+    def get(self,request):
+        products=details.objects.all()[:9]
+        product_ser=product_serializer(products,many=True)
+        for i in product_ser.data:
+            i["img_name"]='/static/'+i["img_name"]+"/"
+            i["video_name"]='/static/'+i["video_name"]+"/"
+        return Response(product_ser.data,status=200)
+    
+    def post(self,request):
+        return Response(status=405)
+
+class DefaultHomeCatagory(APIView):
+
+    def get(self,request):
+        ctatagories=catagory.objects.all()[:4]
+        catagory_ser=catagory_serializer(ctatagories,many=True)
+        return Response(catagory_ser.data,status=200)
+        
+    def post(self,request):
+        return Response(status=405)
+
+class AllCatagories(APIView):
+
+    def get(self,request):
+        catagories=catagory.objects.all()
+        catagory_ser=catagory_serializer(catagories,many=True)
+        return Response(catagory_ser.data,status=200)
+
+    def post(self,request):
+        return Response(status=405)
+

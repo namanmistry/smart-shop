@@ -2,7 +2,7 @@ from django.http.response import HttpResponseNotModified
 from .serializers import user_details_serializer,cart_products_serializer,order_serializer,LoginSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import details,deleted_accounts,cart,orders
+from .models import details,deleted_accounts,cart,orders,login_log
 from product.models import details as product_details
 from retailer.models import product_sold
 from retailer.models import details as retailer_details
@@ -28,6 +28,7 @@ class SignUpUser(APIView):
 
 class DeleteUser(APIView):
     authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
     def post(self,request):
         data=request.data
         if details.objects.filter(email=data["email"],password=data["password"]).exists():
@@ -48,6 +49,7 @@ class DeleteUser(APIView):
 
 class UpdateInfoUser(APIView):
     authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
     def post(self,request):
         data=request.data
         if details.objects.filter(email=data["email"],password=data["password"]).exists():
@@ -78,6 +80,7 @@ class UpdateInfoUser(APIView):
 
 class GetCartInfo(APIView):
     authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
     def get(self,request):
         data=request.data
         cart_products=cart.objects.filter(user=data["id"])
@@ -117,7 +120,7 @@ class DeleteFromCart(APIView):
 
 class GetOrderInfo(APIView):
     authentication_classes=[TokenAuthentication]
-    
+    permission_classes=[IsAuthenticated]
     def get(self,request):
         data=request.data
         user=user=details.objects.get(id=data["id"])
@@ -133,6 +136,7 @@ class GetOrderInfo(APIView):
 
 class PlaceOrder(APIView):
     authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
     def post(self,request):
         data=request.data
         user=details.objects.get(id=data["id"])
@@ -156,6 +160,7 @@ class PlaceOrder(APIView):
 
 class CancelOrder(APIView):
     authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
     def post(self,request):
         data=request.data
         if orders.objects.filter(id=data["order_id"]).exists():
@@ -180,6 +185,8 @@ class LoginUser(APIView):
         serializer=LoginSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         user=serializer.validated_data['user']
+        login_log_obj=login_log(user=user)
+        login_log_obj.save()
         django_login(request,user)
         token,created=Token.objects.get_or_create(user=user)
         return Response({"key":str(token)})
