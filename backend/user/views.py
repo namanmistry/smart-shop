@@ -117,6 +117,7 @@ class DeleteFromCart(APIView):
 
 class GetOrderInfo(APIView):
     authentication_classes=[TokenAuthentication]
+    
     def get(self,request):
         data=request.data
         user=user=details.objects.get(id=data["id"])
