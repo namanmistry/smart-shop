@@ -27,8 +27,7 @@ class LoginSerializer(serializers.Serializer):
         email=data["email"]
         password=data["password"]
         if email and password:
-            user=authenticate(email=email,password=password)
-            print(user)
+            user=details.objects.get(email=email,password=password)
             if user:
                 if user.is_active:
                     data["user"]=user

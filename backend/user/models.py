@@ -82,11 +82,13 @@ class deleted_accounts(models.Model):
 
 class cart(models.Model):
     user=models.ForeignKey(details,on_delete=models.CASCADE)
+    quantity=models.CharField(max_length=100,unique=False,null=False)
     product_details=models.ForeignKey('product.details',on_delete=models.CASCADE)
     time_stamp=models.DateTimeField(auto_now_add=True)
 
 class orders(models.Model):
     user=models.ForeignKey(details,on_delete=models.CASCADE)
     product_details=models.ForeignKey('product.details',on_delete=models.CASCADE)
+    quantity=models.CharField(max_length=100,unique=False,null=False)
     time_stamp=models.DateTimeField(auto_now_add=True)
     retailer_details=models.ForeignKey('retailer.details',on_delete=models.DO_NOTHING)

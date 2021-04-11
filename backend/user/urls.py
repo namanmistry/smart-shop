@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PlaceOrder, SignUpUser,DeleteUser,UpdateInfoUser,GetCartInfo,AddIntoCart,DeleteFromCart,PlaceOrder,CancelOrder,GetOrderInfo,LoginUser,LogoutUSer
+from .views import DecrementProductInCart, PlaceOrder, SignUpUser,DeleteUser,UpdateInfoUser,GetCartInfo,AddIntoCart,DeleteFromCart,PlaceOrder,CancelOrder,GetOrderInfo,LoginUser,LogoutUSer,IncrementProductInCart,DecrementProductInCart
 
 
 urlpatterns = [
@@ -14,4 +14,6 @@ urlpatterns = [
     path('api/get-order/', GetOrderInfo.as_view()),
     path('api/login-user/', LoginUser.as_view()),
     path('api/logout-user/', LogoutUSer.as_view()),
+    path('api/increment-cart-product/', IncrementProductInCart.as_view()),
+    path('api/decrement-cart-product/', DecrementProductInCart.as_view()),
 ]
